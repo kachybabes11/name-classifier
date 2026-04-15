@@ -8,7 +8,6 @@ dotenv.config();
 
 const app = express();
 
-console.log("DATABASE_URL =>", process.env.DATABASE_URL);
 
 // 🚀 CORS CONFIG
 app.use(
