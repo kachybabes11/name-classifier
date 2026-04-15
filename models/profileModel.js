@@ -17,38 +17,37 @@ export async function findProfileById(id) {
 }
 
 export async function createProfile(data) {
-  const query = `
-    INSERT INTO profiles (
-      id,
-      name,
-      gender,
-      gender_probability,
-      sample_size,
-      age,
-      age_group,
-      country_id,
-      country_probability,
-      created_at
-    )
-    VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
-    RETURNING *
-  `;
+  try {
+    console.log("INSERT INPUT:", data);
 
-  const values = [
-    data.id,
-    data.name,
-    data.gender,
-    data.gender_probability,
-    data.sample_size,
-    data.age,
-    data.age_group,
-    data.country_id,
-    data.country_probability,
-    data.created_at
-  ];
+    const result = await db.query(
+      `INSERT INTO profiles (
+        id, name, gender, gender_probability, sample_size,
+        age, age_group, country_id, country_probability, created_at
+      )
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
+      RETURNING *`,
+      [
+        data.id,
+        data.name,
+        data.gender,
+        data.gender_probability,
+        data.sample_size,
+        data.age,
+        data.age_group,
+        data.country_id,
+        data.country_probability,
+        data.created_at
+      ]
+    );
 
-  const result = await db.query(query, values);
-  return result.rows[0];
+    console.log("INSERT SUCCESS:", result.rows[0]);
+
+    return result.rows[0];
+  } catch (err) {
+    console.error("INSERT ERROR:", err);
+    throw err;
+  }
 }
 
 export async function getAllProfiles(filters) {
