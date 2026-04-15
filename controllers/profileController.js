@@ -77,11 +77,14 @@ export async function createProfileController(req, res) {
     });
 
   } catch (err) {
-    res.status(500).json({
-      status: "error",
-      message: "Server error"
-    });
-  }
+  console.error("FULL ERROR:", err);
+
+  res.status(500).json({
+    status: "error",
+    message: err.message,
+    detail: err
+  });
+}
 }
 
 export async function getProfileByIdController(req, res) {
