@@ -1,15 +1,14 @@
-import dotenv from "dotenv";
-dotenv.config();
 import pg from "pg";
 
 const db = new pg.Client({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: Number(process.env.DB_PORT)
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
-db.connect();
+db.connect()
+  .then(() => console.log("DB connected"))
+  .catch(err => console.log("DB error", err));
 
 export default db;
