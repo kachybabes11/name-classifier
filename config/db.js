@@ -7,8 +7,6 @@ const db = new pg.Client({
   },
 });
 
-db.connect()
-  .then(() => console.log("DB connected"))
-  .catch(err => console.log("DB error", err));
+db.connect();
 
 export default db;
