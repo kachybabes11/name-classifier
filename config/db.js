@@ -7,6 +7,6 @@ const db = new pg.Client({
   },
 });
 
-db.connect();
+await db.connect();
 
 export default db;

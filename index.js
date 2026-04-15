@@ -1,30 +1,51 @@
 import express from "express";
+import dotenv from "dotenv";
 import cors from "cors";
-import profileRoutes from "./routes/profileRoutes.js";
+import db from "./config/db.js";
+import profileRoutes from "./routes/profilesRoutes.js";
+
+dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-app.use(cors({ origin: "*" }));
+
+// 🚀 CORS CONFIG
+app.use(
+  cors({
+    origin: "*", // you can restrict this later to your frontend URL
+    methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
 app.use(express.json());
 
-app.use("/api", profileRoutes);
 
-app.get("/db-test", async (req, res) => {
+// TEST DB ROUTE
+app.get("/test-db", async (req, res) => {
   try {
     const result = await db.query("SELECT NOW()");
+
     res.json({
       status: "connected",
-      time: result.rows[0]
+      time: result.rows[0],
     });
   } catch (err) {
-    console.error("DB CONNECTION ERROR:", err);
     res.status(500).json({
       status: "not connected",
-      error: err.message
+      error: err.message,
     });
+    console.log("DATABASE_URL =>", process.env.DATABASE_URL);
   }
 });
+
+
+// ROUTES
+app.use("/api", profileRoutes);
+
+
+// START SERVER
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
