@@ -1,50 +1,14 @@
 import express from "express";
-import dotenv from "dotenv";
 import cors from "cors";
-import db from "./config/db.js";
-import profileRoutes from "./routes/profilesRoutes.js";
-
-dotenv.config();
+import profileRoutes from "./routes/profileRoutes.js";
 
 const app = express();
 
-
-// 🚀 CORS CONFIG
-app.use(
-  cors({
-    origin: "*", // you can restrict this later to your frontend URL
-    methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
-
 app.use(express.json());
+app.use(cors({ origin: "*" }));
 
+app.use("/api/profiles", profileRoutes);
 
-// TEST DB ROUTE
-app.get("/test-db", async (req, res) => {
-  try {
-    const result = await db.query("SELECT NOW()");
-
-    res.json({
-      status: "connected",
-      time: result.rows[0],
-    });
-  } catch (err) {
-    res.status(500).json({
-      status: "not connected",
-      error: err.message,
-    });
-  
-  }
-});
-
-
-// ROUTES
-app.use("/api", profileRoutes);
-
-
-// START SERVER
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
