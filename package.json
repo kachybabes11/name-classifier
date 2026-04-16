@@ -5,13 +5,13 @@
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "pg": "^8.20.0",
-    "uuid": "^13.0.0"
+    "uuid": "^13.0.0",
+    "uuidv7": "^1.2.1"
   },
   "name": "hng-projects-b",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "devDependencies": {},
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
