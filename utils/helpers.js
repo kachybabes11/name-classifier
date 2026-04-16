@@ -5,7 +5,7 @@ export function getAgeGroup(age) {
   return "senior";
 }
 
-export function getTopCountry(countries) {
+export function pickBestCountry(countries) {
   if (!countries.length) return null;
 
   return countries.reduce((max, curr) =>
