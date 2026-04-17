@@ -14,7 +14,7 @@ export async function createProfile(req, res) {
   try {
     let { name } = req.body;
 
-    if (!name) {
+          if (!name) {
       return res.status(400).json({
         status: "error",
         message: "Missing or empty name",
@@ -31,11 +31,11 @@ export async function createProfile(req, res) {
     name = name.trim().toLowerCase();
 
     const existing = await findByName(name);
+    
     if (existing) {
       return res.json({
         status: "success",
-        message: "Profile already exists",
-        data: existing,
+        message: "Profile already exists"
       });
     }
 
