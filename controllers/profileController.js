@@ -8,7 +8,6 @@ import {
 } from "../models/profileModel.js";
 import { fetchExternalData } from "../services/externalApiService.js";
 import { getAgeGroup, pickBestCountry } from "../utils/helpers.js";
-import { getAll } from "../models/profileModel.js";
 import { parseQuery } from "../utils/queryParser.js";
 
 export async function getProfiles(req, res) {
