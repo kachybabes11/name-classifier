@@ -10,8 +10,6 @@ app.use(cors({ origin: "*" }));
 
 app.use("/api/profiles", profileRoutes);
 
-
-
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

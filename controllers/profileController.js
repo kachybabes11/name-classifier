@@ -8,6 +8,57 @@ import {
 } from "../models/profileModel.js";
 import { fetchExternalData } from "../services/externalApiService.js";
 import { getAgeGroup, pickBestCountry } from "../utils/helpers.js";
+import { getAll } from "../models/profileModel.js";
+import { parseQuery } from "../utils/queryParser.js";
+
+export async function getProfiles(req, res) {
+  try {
+    const result = await getAll(req.query);
+
+    res.json({
+      status: "success",
+      page: result.page,
+      limit: result.limit,
+      total: result.total,
+      data: result.data,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+}
+
+export async function searchProfiles(req, res) {
+  try {
+    const parsed = parseQuery(req.query.q);
+
+    if (!parsed) {
+      return res.status(400).json({
+        status: "error",
+        message: "Unable to interpret query",
+      });
+    }
+
+    const result = await getAll({ ...parsed, ...req.query });
+
+    res.json({
+      status: "success",
+      page: result.page,
+      limit: result.limit,
+      total: result.total,
+      data: result.data,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+}
+
+
 
 // CREATE PROFILE
 export async function createProfile(req, res) {
@@ -75,6 +126,7 @@ export async function createProfile(req, res) {
       age_group: getAgeGroup(age.age),
       country_id: bestCountry.country_id,
       country_probability: bestCountry.probability,
+      country_name: bestCountry.country_name,
       created_at: new Date().toISOString(),
     };
 
