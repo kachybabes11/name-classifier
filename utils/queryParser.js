@@ -51,6 +51,7 @@ export function parseQuery(q) {
     kenya: "KE",
     ghana: "GH",
     egypt: "EG",
+    angola:"AO",
     uk: "GB",
     "united kingdom": "GB",
     usa: "US",
