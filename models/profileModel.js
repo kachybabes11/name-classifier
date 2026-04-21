@@ -31,7 +31,11 @@ export async function getAll(filters) {
     query += ` AND age_group = $${values.length}`;
   }
 
-  if (country_id) {
+ if (Array.isArray(country_id)) {
+  values.push(country_id);
+  query += ` AND country_id = ANY($${values.length})`;
+  } 
+  else if (country_id) {
     values.push(country_id);
     query += ` AND country_id = $${values.length}`;
   }
