@@ -23,6 +23,7 @@ export function parseQuery(q) {
 
 
   if (q.includes("child")) filters.age_group = "child";
+  if (q.includes("teenager")) filters.age_group = "teenager";
   if (q.includes("adult")) filters.age_group = "adult";
   if (q.includes("senior")) filters.age_group = "senior";
 
@@ -63,7 +64,7 @@ export function parseQuery(q) {
     if (q.includes(key)) {
       filters.country_id = countries[key];
       foundCountry = true;
-      break; // IMPORTANT: stop here
+      break; 
     }
   }
 
