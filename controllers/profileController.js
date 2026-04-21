@@ -6,10 +6,13 @@ import {
   create,
   deleteById,
 } from "../models/profileModel.js";
+
 import { fetchExternalData } from "../services/externalApiService.js";
 import { getAgeGroup, pickBestCountry } from "../utils/helpers.js";
 import { parseQuery } from "../utils/queryParser.js";
 
+
+// GET ALL PROFILES 
 export async function getProfiles(req, res) {
   try {
     const result = await getAll(req.query);
@@ -29,6 +32,8 @@ export async function getProfiles(req, res) {
   }
 }
 
+
+// NATURAL LANGUAGE SEARCH
 export async function searchProfiles(req, res) {
   try {
     const parsed = parseQuery(req.query.q);
@@ -57,14 +62,12 @@ export async function searchProfiles(req, res) {
   }
 }
 
-
-
 // CREATE PROFILE
 export async function createProfile(req, res) {
   try {
     let { name } = req.body;
 
-          if (!name) {
+    if (!name) {
       return res.status(400).json({
         status: "error",
         message: "Missing or empty name",
@@ -81,17 +84,16 @@ export async function createProfile(req, res) {
     name = name.trim().toLowerCase();
 
     const existing = await findByName(name);
-    
+
     if (existing) {
       return res.json({
         status: "success",
-        message: "Profile already exists"
+        message: "Profile already exists",
       });
     }
 
     const { gender, age, nationality } = await fetchExternalData(name);
 
-    // Edge cases
     if (!gender.gender || gender.count === 0) {
       return res.status(502).json({
         status: "error",
@@ -120,12 +122,11 @@ export async function createProfile(req, res) {
       name,
       gender: gender.gender,
       gender_probability: gender.probability,
-      sample_size: gender.count,
       age: age.age,
       age_group: getAgeGroup(age.age),
       country_id: bestCountry.country_id,
-      country_probability: bestCountry.probability,
       country_name: bestCountry.country_name,
+      country_probability: bestCountry.probability,
       created_at: new Date().toISOString(),
     };
 
@@ -144,7 +145,7 @@ export async function createProfile(req, res) {
   }
 }
 
-// GET SINGLE
+// GET SINGLE PROFILE
 export async function getSingleProfile(req, res) {
   const profile = await findById(req.params.id);
 
@@ -161,18 +162,7 @@ export async function getSingleProfile(req, res) {
   });
 }
 
-// GET ALL
-export async function getProfiles(req, res) {
-  const profiles = await getAll(req.query);
-
-  res.json({
-    status: "success",
-    count: profiles.length,
-    data: profiles,
-  });
-}
-
-// DELETE
+// DELETE PROFILE
 export async function deleteProfile(req, res) {
   const deleted = await deleteById(req.params.id);
 
